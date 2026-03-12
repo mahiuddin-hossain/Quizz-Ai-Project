@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuizAI — লিডারবোর্ড</title>
+  <link rel="stylesheet" href="leaderboard.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+  <div class="bg-grid"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <button class="back-btn" onclick="window.location.href='dashboard.html'">← ড্যাশবোর্ড</button>
+    </div>
+    <div class="nav-logo">
+      <div class="logo-icon-wrap">Q</div>
+      <span>QuizAI</span>
+    </div>
+    <div class="nav-right">
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-bn" onclick="setLang('bn')">বাংলা</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main-content">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div class="header-icon">🏆</div>
+      <div>
+        <h1 class="page-title" id="page-title">লিডারবোর্ড</h1>
+        <p class="page-sub" id="page-sub">সেরা শিক্ষার্থীদের র‍্যাংকিং</p>
+      </div>
+    </div>
+
+    <!-- My Rank Banner -->
+    <div class="my-rank-banner" id="my-rank-banner" style="display:none">
+      <div class="my-rank-left">
+        <div class="my-rank-pos" id="my-rank-pos">#—</div>
+        <div class="my-rank-info">
+          <div class="my-rank-name" id="my-rank-name">তুমি</div>
+          <div class="my-rank-sub" id="my-rank-sub">তোমার বর্তমান অবস্থান</div>
+        </div>
+      </div>
+      <div class="my-rank-right">
+        <div class="my-rank-pts" id="my-rank-pts">0</div>
+        <div class="my-rank-pts-lbl" id="my-rank-pts-lbl">পয়েন্ট</div>
+      </div>
+    </div>
+
+    <!-- Top 3 Podium -->
+    <div class="podium-wrap" id="podium-wrap">
+      <!-- rendered by JS -->
+    </div>
+
+    <!-- Full Table -->
+    <div class="table-card">
+      <div class="table-header">
+        <h2 class="table-title" id="table-title">সম্পূর্ণ র‍্যাংকিং</h2>
+        <div class="table-meta" id="table-meta"></div>
+      </div>
+
+      <!-- Loading skeleton -->
+      <div class="skeleton-wrap" id="skeleton-wrap">
+        <div class="skeleton-row" style="--d:0s"></div>
+        <div class="skeleton-row" style="--d:.06s"></div>
+        <div class="skeleton-row" style="--d:.12s"></div>
+        <div class="skeleton-row" style="--d:.18s"></div>
+        <div class="skeleton-row" style="--d:.24s"></div>
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="empty-state" style="display:none">
+        <div class="empty-icon">🏁</div>
+        <p id="empty-msg">এখনো কেউ কুইজ দেয়নি। প্রথম হওয়ার সুযোগ তোমার!</p>
+      </div>
+
+      <!-- Error state -->
+      <div class="error-state" id="error-state" style="display:none">
+        <div class="error-icon">⚠️</div>
+        <p id="error-msg">লোড করা যায়নি। সার্ভার চালু আছে কিনা দেখো।</p>
+        <button class="retry-btn" onclick="loadLeaderboard()">🔄 আবার চেষ্টা</button>
+      </div>
+
+      <!-- Leaderboard rows -->
+      <div class="lb-list" id="lb-list"></div>
+    </div>
+
+  </main>
+
+  <script src="leaderboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+# ╔══════════════════════════════════════════════╗
+# ║  QuizAI — .gitignore                        ║
+# ║  ⚠️  এই file গুলো কখনো GitHub এ যাবে না   ║
+# ╚══════════════════════════════════════════════╝
+
+# ── SECRET FILES — NEVER PUSH ─────────────────
+.env
+.env.local
+.env.production
+.env.staging
+.env.*.local
+*.pem
+*.key
+*.cert
+*.p12
+
+# ── DEPENDENCIES ──────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# ── OS FILES ──────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ── EDITOR ────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ── LOGS ──────────────────────────────────────
+logs/
+*.log

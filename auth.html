@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuizAI — Login / Register</title>
+  <link rel="stylesheet" href="auth.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- Background rings -->
+  <div class="bg-glow"></div>
+  <div class="rings">
+    <span class="ring" style="--s:200px"></span>
+    <span class="ring" style="--s:360px"></span>
+    <span class="ring" style="--s:520px"></span>
+    <span class="ring" style="--s:680px"></span>
+  </div>
+
+  <!-- Floating particles -->
+  <div class="particles" id="particles"></div>
+
+  <div class="split-layout">
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <a href="#" class="logo">
+        <div class="logo-icon">Q</div>
+        <span>QuizAI</span>
+      </a>
+
+      <div class="left-content">
+        <div class="tag-pill">🚀 <span>AI-Powered Learning</span></div>
+        <h1 class="left-title">
+          তোমার স্বপ্নের<br/>
+          <span class="grad-text">পরীক্ষায় জয়ী হও</span>
+        </h1>
+        <p class="left-sub">SSC, HSC, Medical ও University ভর্তি পরীক্ষার জন্য AI-চালিত স্মার্ট কুইজ প্ল্যাটফর্ম।</p>
+
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div>
+              <strong>AI প্রশ্ন জেনারেশন</strong>
+              <p>যেকোনো টপিকে কাস্টম MCQ তৈরি করো</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📊</div>
+            <div>
+              <strong>পারফরম্যান্স ট্র্যাকিং</strong>
+              <p>প্রতিটি কুইজের ফলাফল সংরক্ষিত থাকে</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🎯</div>
+            <div>
+              <strong>স্মার্ট ব্যাখ্যা</strong>
+              <p>প্রতিটি ভুল উত্তরের বিস্তারিত ব্যাখ্যা</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="left-footer">
+        <div class="stat-pill">📝 <b>20+</b> প্রশ্ন/কুইজ</div>
+        <div class="stat-pill">🏆 <b>4</b> ক্যাটাগরি</div>
+        <div class="stat-pill">✨ <b>AI</b> চালিত</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL (Auth Card) -->
+    <div class="right-panel">
+      <div class="auth-card" id="auth-card">
+
+        <!-- Tab switcher -->
+        <div class="tab-switch">
+          <button class="tab-btn active" id="tab-reg" onclick="showTab('register')">
+            রেজিস্ট্রেশন
+          </button>
+          <button class="tab-btn" id="tab-log" onclick="showTab('login')">
+            লগ-ইন
+          </button>
+          <div class="tab-slider" id="tab-slider"></div>
+        </div>
+
+        <!-- Toast notification -->
+        <div class="toast" id="toast"></div>
+
+        <!-- ===== REGISTER FORM ===== -->
+        <div class="form-pane" id="pane-register">
+          <div class="form-header">
+            <h2>অ্যাকাউন্ট তৈরি করো</h2>
+            <p>বিনামূল্যে শুরু করো — কোনো ক্রেডিট কার্ড লাগবে না</p>
+          </div>
+
+          <div class="input-group">
+            <label>পূর্ণ নাম</label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input type="text" id="reg-name" placeholder="তোমার নাম লেখো" autocomplete="off"/>
+            </div>
+            <span class="field-error" id="err-reg-name"></span>
+          </div>
+
+          <div class="input-group">
+            <label>ইমেইল</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉️</span>
+              <input type="email" id="reg-email" placeholder="email@example.com" autocomplete="off"/>
+            </div>
+            <span class="field-error" id="err-reg-email"></span>
+          </div>
+
+          <div class="input-group">
+            <label>পাসওয়ার্ড</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="reg-pass" placeholder="কমপক্ষে ৬ অক্ষর"/>
+              <button type="button" class="eye-btn" onclick="togglePass('reg-pass', this)">👁️</button>
+            </div>
+            <div class="pass-strength" id="pass-strength" style="display:none">
+              <div class="strength-bar">
+                <div class="strength-fill" id="strength-fill"></div>
+              </div>
+              <span id="strength-label"></span>
+            </div>
+            <span class="field-error" id="err-reg-pass"></span>
+          </div>
+
+          <div class="input-group">
+            <label>পাসওয়ার্ড নিশ্চিত করো</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔑</span>
+              <input type="password" id="reg-pass2" placeholder="একই পাসওয়ার্ড আবার লেখো"/>
+              <button type="button" class="eye-btn" onclick="togglePass('reg-pass2', this)">👁️</button>
+            </div>
+            <span class="field-error" id="err-reg-pass2"></span>
+          </div>
+
+          <button class="submit-btn" id="reg-btn" onclick="doRegister()">
+            <span class="btn-text">রেজিস্ট্রেশন করো</span>
+            <span class="btn-loader" style="display:none">
+              <span class="spinner"></span> অপেক্ষা করো...
+            </span>
+          </button>
+
+          <p class="switch-text">
+            ইতোমধ্যে অ্যাকাউন্ট আছে?
+            <a href="#" onclick="showTab('login')">লগ-ইন করো</a>
+          </p>
+        </div>
+
+        <!-- ===== LOGIN FORM ===== -->
+        <div class="form-pane" id="pane-login" style="display:none">
+          <div class="form-header">
+            <h2>স্বাগতম ফিরে! 👋</h2>
+            <p>তোমার অ্যাকাউন্টে প্রবেশ করো</p>
+          </div>
+
+          <div class="input-group">
+            <label>ইমেইল</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉️</span>
+              <input type="email" id="log-email" placeholder="email@example.com"/>
+            </div>
+            <span class="field-error" id="err-log-email"></span>
+          </div>
+
+          <div class="input-group">
+            <label>পাসওয়ার্ড</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="log-pass" placeholder="তোমার পাসওয়ার্ড"/>
+              <button type="button" class="eye-btn" onclick="togglePass('log-pass', this)">👁️</button>
+            </div>
+            <span class="field-error" id="err-log-pass"></span>
+          </div>
+
+          <div class="remember-row">
+            <label class="checkbox-wrap">
+              <input type="checkbox" id="remember-me"/>
+              <span class="checkmark"></span>
+              মনে রাখো
+            </label>
+            <a href="#" class="forgot-link">পাসওয়ার্ড ভুলে গেছ?</a>
+          </div>
+
+          <button class="submit-btn" id="log-btn" onclick="doLogin()">
+            <span class="btn-text">লগ-ইন করো</span>
+            <span class="btn-loader" style="display:none">
+              <span class="spinner"></span> যাচাই হচ্ছে...
+            </span>
+          </button>
+
+          <p class="switch-text">
+            নতুন ব্যবহারকারী?
+            <a href="#" onclick="showTab('register')">রেজিস্ট্রেশন করো</a>
+          </p>
+        </div>
+
+        <!-- SUCCESS STATE -->
+        <div class="success-pane" id="pane-success" style="display:none">
+          <div class="success-icon">🎉</div>
+          <h2 id="success-title">সফলভাবে লগ-ইন হয়েছে!</h2>
+          <p id="success-msg">ড্যাশবোর্ডে যাওয়া হচ্ছে...</p>
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+</body>
+</html>

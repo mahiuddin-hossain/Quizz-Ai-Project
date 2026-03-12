@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuizAI — Quiz Review</title>
+  <link rel="stylesheet" href="quiz-review.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+  <div class="bg-grid"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <button class="back-btn" onclick="window.location.href='dashboard.html'">
+        ← ড্যাশবোর্ড
+      </button>
+      <div class="nav-subject-pill" id="nav-subject-pill">
+        <span id="nav-icon">📝</span>
+        <span id="nav-subject">পর্যালোচনা</span>
+      </div>
+    </div>
+    <div class="nav-center-logo">
+      <div class="logo-icon">Q</div>
+      <span>QuizAI</span>
+    </div>
+    <div class="nav-right">
+      <div class="nav-date" id="nav-date"></div>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main-content">
+
+    <!-- Score Hero -->
+    <div class="score-hero">
+      <div class="hero-top">
+
+        <!-- Ring -->
+        <div class="hero-ring-wrap">
+          <svg width="148" height="148" viewBox="0 0 148 148">
+            <circle class="ring-bg"   cx="74" cy="74" r="62"/>
+            <circle class="ring-fill" id="ring-fill" cx="74" cy="74" r="62"/>
+          </svg>
+          <div class="ring-inner">
+            <div class="ring-score" id="hero-score">0</div>
+            <div class="ring-total" id="hero-total">/20</div>
+          </div>
+        </div>
+
+        <!-- Grade block -->
+        <div class="hero-text-block">
+          <div class="hero-grade"   id="hero-grade">—</div>
+          <div class="hero-pct"     id="hero-pct">0%</div>
+          <p   class="hero-msg"     id="hero-msg"></p>
+          <div class="hero-subject-pill">
+            <span id="hero-icon">📖</span>
+            <span id="hero-subject">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="hero-stats">
+        <div class="hs-card">
+          <div class="hs-icon green-bg">✅</div>
+          <div class="hs-val green"  id="hs-correct">0</div>
+          <div class="hs-lbl">সঠিক</div>
+        </div>
+        <div class="hs-card">
+          <div class="hs-icon red-bg">❌</div>
+          <div class="hs-val red"    id="hs-wrong">0</div>
+          <div class="hs-lbl">ভুল</div>
+        </div>
+        <div class="hs-card">
+          <div class="hs-icon orange-bg">⏭️</div>
+          <div class="hs-val orange" id="hs-skipped">0</div>
+          <div class="hs-lbl">বাদ দেওয়া</div>
+        </div>
+        <div class="hs-card">
+          <div class="hs-icon purple-bg">⭐</div>
+          <div class="hs-val purple" id="hs-points">0</div>
+          <div class="hs-lbl">পয়েন্ট</div>
+        </div>
+        <div class="hs-card">
+          <div class="hs-icon cyan-bg">⏱️</div>
+          <div class="hs-val cyan"   id="hs-time">0s</div>
+          <div class="hs-lbl">মোট সময়</div>
+        </div>
+        <div class="hs-card">
+          <div class="hs-icon pink-bg">🎯</div>
+          <div class="hs-val pink"   id="hs-diff">—</div>
+          <div class="hs-lbl">কঠিনতা</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Meta bar -->
+    <div class="meta-bar">
+      <span class="meta-chip">📂 <span id="meta-cat">—</span></span>
+      <span class="meta-chip">📅 <span id="meta-date">—</span></span>
+      <span class="meta-chip">❓ <span id="meta-qcount">—</span></span>
+    </div>
+
+    <!-- ===== REVIEW SECTION ===== -->
+    <div class="review-section">
+      <div class="review-header">
+        <h2>প্রশ্নোত্তর পর্যালোচনা</h2>
+        <div class="filter-row" id="filter-row">
+          <button class="filter-btn active" data-filter="all"     onclick="setFilter('all',this)">
+            সব <span class="fc"           id="fc-all">0</span>
+          </button>
+          <button class="filter-btn"        data-filter="wrong"   onclick="setFilter('wrong',this)">
+            ভুল <span class="fc wrong-c"   id="fc-wrong">0</span>
+          </button>
+          <button class="filter-btn"        data-filter="correct" onclick="setFilter('correct',this)">
+            সঠিক <span class="fc correct-c" id="fc-correct">0</span>
+          </button>
+          <button class="filter-btn"        data-filter="skipped" onclick="setFilter('skipped',this)">
+            বাদ <span class="fc skipped-c" id="fc-skipped">0</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="review-list" id="review-list"></div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="action-row">
+      <button class="action-btn secondary" onclick="window.location.href='dashboard.html'">
+        🏠 হোমে ফিরো
+      </button>
+      <button class="action-btn primary" onclick="retakeQuiz()">
+        🔄 এই বিষয়ে আবার কুইজ দাও
+      </button>
+    </div>
+
+  </main>
+
+  <script src="quiz-review.js"></script>
+</body>
+</html>

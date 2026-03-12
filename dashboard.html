@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuizAI — Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-glow"></div>
+  <div class="bg-grid"></div>
+  <div class="particles" id="particles"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-left">
+      <a href="#" class="logo">
+        <div class="logo-icon">Q</div>
+        <span>QuizAI</span>
+      </a>
+    </div>
+
+    <div class="nav-right">
+      <!-- Language Toggle -->
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-bn" onclick="setLang('bn')">বাংলা</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      </div>
+
+      <!-- Leaderboard link -->
+      <a href="leaderboard.html" class="nav-icon-btn" title="লিডারবোর্ড" style="text-decoration:none;font-size:18px;">🏆</a>
+
+      <!-- Notification -->
+      <button class="nav-icon-btn" title="Notifications">
+        <span class="notif-dot"></span>
+        🔔
+      </button>
+
+      <!-- User Menu -->
+      <div class="user-menu" id="user-menu" onclick="toggleUserDropdown()">
+        <div class="user-avatar" id="nav-avatar">A</div>
+        <span class="user-name" id="nav-username">Student</span>
+        <span class="chevron" id="user-chevron">▾</span>
+
+        <div class="user-dropdown" id="user-dropdown">
+          <div class="dropdown-header">
+            <div class="dropdown-avatar" id="drop-avatar">A</div>
+            <div>
+              <div class="dropdown-name" id="drop-name">Student</div>
+              <div class="dropdown-email" id="drop-email">student@email.com</div>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">👤 <span data-key="profile">প্রোফাইল</span></a>
+          <a href="#" class="dropdown-item">📊 <span data-key="my_results">আমার ফলাফল</span></a>
+          <a href="#" class="dropdown-item">⚙️ <span data-key="settings">সেটিংস</span></a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item danger" onclick="doLogout()">🚪 <span data-key="logout">লগ-আউট</span></a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+
+    <!-- Welcome Section -->
+    <section class="welcome-section" id="welcome-section">
+      <div class="welcome-text">
+        <p class="welcome-greeting" data-key="greeting">👋 স্বাগতম,</p>
+        <h1 class="welcome-title">
+          <span id="welcome-name">Student</span>!
+          <span data-key="ready_text"> আজকে কী পড়বে?</span>
+        </h1>
+        <p class="welcome-sub" data-key="welcome_sub">তোমার পছন্দের ক্যাটাগরি ও সাবজেক্ট বেছে নাও, AI বাকি কাজ করবে।</p>
+      </div>
+      <div class="welcome-badge-row">
+        <div class="welcome-badge">🔥 <span id="streak-count">0</span> <span data-key="day_streak">দিনের ধারা</span></div>
+        <div class="welcome-badge">📝 <span id="quiz-count">0</span> <span data-key="quizzes_done">কুইজ সম্পন্ন</span></div>
+        <!-- ⭐ avg score → quiz points -->
+        <div class="welcome-badge">⭐ <span id="points-count">0</span> <span data-key="quiz_points">কুইজ পয়েন্ট</span></div>
+      </div>
+    </section>
+
+    <!-- Stats Cards -->
+    <section class="stats-section" id="stats-section">
+      <div class="stat-card" style="--delay:0s">
+        <div class="stat-icon" style="background:rgba(139,92,246,0.15)">📝</div>
+        <div class="stat-info">
+          <div class="stat-val" id="stat-total">0</div>
+          <div class="stat-lbl" data-key="total_quizzes">মোট কুইজ</div>
+        </div>
+        <div class="stat-trend up">↑ 0%</div>
+      </div>
+      <!-- ✅ stat-avg now shows points -->
+      <div class="stat-card" style="--delay:0.08s">
+        <div class="stat-icon" style="background:rgba(16,185,129,0.15)">⭐</div>
+        <div class="stat-info">
+          <div class="stat-val" id="stat-avg">0 পয়েন্ট</div>
+          <div class="stat-lbl" data-key="quiz_points_label">কুইজ পয়েন্ট</div>
+        </div>
+        <div class="stat-trend up">↑ ১ প্রতি কুইজ</div>
+      </div>
+      <div class="stat-card" style="--delay:0.16s">
+        <div class="stat-icon" style="background:rgba(249,115,22,0.15)">🔥</div>
+        <div class="stat-info">
+          <div class="stat-val" id="stat-streak">0</div>
+          <div class="stat-lbl" data-key="day_streak_label">দিনের ধারা</div>
+        </div>
+        <div class="stat-trend up">↑ চলছে</div>
+      </div>
+      <div class="stat-card" style="--delay:0.24s">
+        <div class="stat-icon" style="background:rgba(6,182,212,0.15)">⏱️</div>
+        <div class="stat-info">
+          <div class="stat-val" id="stat-time">0মি</div>
+          <div class="stat-lbl" data-key="time_spent">সময় ব্যয়</div>
+        </div>
+        <div class="stat-trend neutral">→ আজ</div>
+      </div>
+    </section>
+
+    <!-- ===== CATEGORY TABS CARD ===== -->
+    <section class="tabs-section" id="tabs-section">
+      <div class="section-header">
+        <h2 class="section-title" data-key="choose_category">ক্যাটাগরি বেছে নাও</h2>
+        <p class="section-sub" data-key="choose_category_sub">তোমার পরীক্ষার ধরন সিলেক্ট করো</p>
+      </div>
+
+      <div class="tabs-card">
+        <button class="cat-tab active" onclick="selectCategory('ssc', this)" id="tab-ssc">
+          <span class="cat-tab-icon">📚</span>
+          <div class="cat-tab-text">
+            <span class="cat-tab-name" data-key="tab_ssc">SSC প্রস্তুতি</span>
+            <span class="cat-tab-sub" data-key="tab_ssc_sub">মাধ্যমিক পরীক্ষা</span>
+          </div>
+        </button>
+        <button class="cat-tab" onclick="selectCategory('hsc', this)" id="tab-hsc">
+          <span class="cat-tab-icon">🎓</span>
+          <div class="cat-tab-text">
+            <span class="cat-tab-name" data-key="tab_hsc">HSC প্রস্তুতি</span>
+            <span class="cat-tab-sub" data-key="tab_hsc_sub">উচ্চমাধ্যমিক পরীক্ষা</span>
+          </div>
+        </button>
+        <button class="cat-tab" onclick="selectCategory('medical', this)" id="tab-medical">
+          <span class="cat-tab-icon">🏥</span>
+          <div class="cat-tab-text">
+            <span class="cat-tab-name" data-key="tab_medical">মেডিকেল ভর্তি</span>
+            <span class="cat-tab-sub" data-key="tab_medical_sub">MBBS ভর্তি পরীক্ষা</span>
+          </div>
+        </button>
+        <button class="cat-tab" onclick="selectCategory('university', this)" id="tab-university">
+          <span class="cat-tab-icon">🏛️</span>
+          <div class="cat-tab-text">
+            <span class="cat-tab-name" data-key="tab_university">বিশ্ববিদ্যালয় ভর্তি</span>
+            <span class="cat-tab-sub" data-key="tab_university_sub">পাবলিক বিশ্ববিদ্যালয়</span>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== SUBJECTS GRID ===== -->
+    <section class="subjects-section" id="subjects-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title" id="subjects-title" data-key="choose_subject">সাবজেক্ট বেছে নাও</h2>
+          <p class="section-sub" data-key="choose_subject_sub">যে বিষয়ে কুইজ দিতে চাও সেটি ক্লিক করো</p>
+        </div>
+        <div class="subject-count-badge" id="subject-count-badge">৬টি বিষয়</div>
+      </div>
+      <div class="subjects-grid" id="subjects-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ===== RECENT HISTORY ===== -->
+    <section class="history-section" id="history-section">
+      <div class="section-header">
+        <h2 class="section-title" data-key="recent_history">সাম্প্রতিক কুইজ</h2>
+        <a href="#" class="see-all-link" data-key="see_all">সব দেখো →</a>
+      </div>
+      <div class="history-list" id="history-list">
+        <div class="history-empty" id="history-empty">
+          <div class="empty-icon">📭</div>
+          <p data-key="no_history">এখনো কোনো কুইজ দেওয়া হয়নি। শুরু করো!</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== PROMPT MODAL ===== -->
+  <div class="modal-overlay" id="prompt-modal">
+    <div class="modal-card">
+      <div class="modal-top-bar"></div>
+
+      <div class="modal-header">
+        <div class="modal-subject-info">
+          <div class="modal-subject-icon" id="modal-icon">📖</div>
+          <div>
+            <div class="modal-subject-cat" id="modal-cat-label">SSC প্রস্তুতি</div>
+            <div class="modal-subject-name" id="modal-subject-name">জীববিজ্ঞান</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <label class="modal-label" data-key="custom_prompt_label">
+          কাস্টম নির্দেশনা দাও
+          <span class="optional-tag" data-key="optional">ঐচ্ছিক</span>
+        </label>
+        <textarea
+          class="prompt-textarea"
+          id="custom-prompt"
+          rows="4"
+          placeholder="যেমন: কোষ বিভাজন অধ্যায় থেকে কঠিন প্রশ্ন দাও..."
+        ></textarea>
+
+        <div class="hint-label" data-key="quick_hints">দ্রুত নির্দেশনা:</div>
+        <div class="hint-chips" id="hint-chips"></div>
+
+        <div class="quiz-settings">
+          <div class="setting-item">
+            <label data-key="question_count">প্রশ্নের সংখ্যা</label>
+            <div class="setting-options" id="q-count-options">
+              <button class="setting-opt" onclick="selectQCount(10, this)">১০</button>
+              <button class="setting-opt active" onclick="selectQCount(20, this)">২০</button>
+              <button class="setting-opt" onclick="selectQCount(30, this)">৩০</button>
+            </div>
+          </div>
+          <div class="setting-item">
+            <label data-key="difficulty">কঠিনতার স্তর</label>
+            <div class="setting-options" id="diff-options">
+              <button class="setting-opt" onclick="selectDiff('easy', this)" data-key="easy">সহজ</button>
+              <button class="setting-opt active" onclick="selectDiff('medium', this)" data-key="medium">মাঝারি</button>
+              <button class="setting-opt" onclick="selectDiff('hard', this)" data-key="hard">কঠিন</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()" data-key="cancel">বাতিল</button>
+        <button class="btn-generate" id="generate-btn" onclick="goToQuiz()">
+          <span class="btn-text">⚡ <span data-key="generate">কুইজ তৈরি করো</span></span>
+          <span class="btn-loader" style="display:none"><span class="spinner"></span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

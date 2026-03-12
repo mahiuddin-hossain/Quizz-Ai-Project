@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuizAI — Quiz</title>
+  <link rel="stylesheet" href="quiz.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+  <div class="bg-grid"></div>
+
+  <!-- ===== LOADING SCREEN ===== -->
+  <div class="screen" id="screen-loading">
+    <div class="loading-wrap">
+      <div class="loading-orb">
+        <div class="orb-ring orb-ring-1"></div>
+        <div class="orb-ring orb-ring-2"></div>
+        <div class="orb-ring orb-ring-3"></div>
+        <div class="orb-core">
+          <span id="loading-subject-icon">📖</span>
+        </div>
+      </div>
+      <h2 class="loading-title" id="loading-title">কুইজ তৈরি হচ্ছে...</h2>
+      <p class="loading-sub" id="loading-sub">Groq AI তোমার জন্য প্রশ্ন সাজাচ্ছে</p>
+      <div class="loading-steps">
+        <div class="loading-step active" id="step-1">
+          <div class="step-dot"></div>
+          <span id="step-1-text">বিষয় বিশ্লেষণ করা হচ্ছে...</span>
+        </div>
+        <div class="loading-step" id="step-2">
+          <div class="step-dot"></div>
+          <span id="step-2-text">প্রশ্ন তৈরি করা হচ্ছে...</span>
+        </div>
+        <div class="loading-step" id="step-3">
+          <div class="step-dot"></div>
+          <span id="step-3-text">কুইজ প্রস্তুত করা হচ্ছে...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== QUIZ SCREEN ===== -->
+  <div class="screen hidden" id="screen-quiz">
+
+    <!-- Top bar -->
+    <div class="quiz-topbar">
+      <div class="quiz-topbar-left">
+        <button class="quit-btn" id="quit-btn" onclick="confirmQuit()">
+          ← <span id="quit-label">ছেড়ে যাও</span>
+        </button>
+        <div class="quiz-subject-pill" id="quiz-subject-pill">
+          <span id="quiz-subject-icon-sm">📖</span>
+          <span id="quiz-subject-name-sm">বিষয়</span>
+        </div>
+      </div>
+      <div class="quiz-topbar-center">
+        <span class="q-counter"><span id="q-current">1</span> / <span id="q-total">20</span></span>
+      </div>
+      <div class="quiz-topbar-right">
+        <div class="score-live">
+          <span class="score-live-icon">⭐</span>
+          <span id="live-score">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-track">
+      <div class="progress-bar-fill" id="progress-bar-fill"></div>
+    </div>
+
+    <!-- Quiz body -->
+    <div class="quiz-body">
+
+      <!-- Timer -->
+      <div class="timer-wrap">
+        <div class="timer-ring-svg">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle class="timer-bg-circle" cx="36" cy="36" r="30"/>
+            <circle class="timer-fg-circle" id="timer-fg" cx="36" cy="36" r="30"/>
+          </svg>
+          <div class="timer-num" id="timer-num">30</div>
+        </div>
+        <div class="timer-label" id="timer-label">সেকেন্ড বাকি</div>
+      </div>
+
+      <!-- Question card -->
+      <div class="question-card" id="question-card">
+        <div class="question-meta">
+          <span class="question-num-badge" id="q-num-badge">প্রশ্ন ১</span>
+          <span class="question-difficulty-badge" id="diff-badge">মাঝারি</span>
+        </div>
+        <p class="question-text" id="question-text">প্রশ্ন লোড হচ্ছে...</p>
+      </div>
+
+      <!-- Options -->
+      <div class="options-grid" id="options-grid"></div>
+
+      <!-- Next button (shows after answer) -->
+      <button class="next-btn hidden" id="next-btn" onclick="nextQuestion()">
+        <span id="next-label">পরের প্রশ্ন</span> →
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ===== RESULT SCREEN ===== -->
+  <div class="screen hidden" id="screen-result">
+
+    <div class="result-container">
+
+      <!-- Confetti canvas -->
+      <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+
+      <!-- Score hero -->
+      <div class="result-hero">
+        <div class="result-score-ring">
+          <svg width="160" height="160" viewBox="0 0 160 160">
+            <circle class="score-ring-bg" cx="80" cy="80" r="68"/>
+            <circle class="score-ring-fill" id="score-ring-fill" cx="80" cy="80" r="68"/>
+          </svg>
+          <div class="result-score-inner">
+            <div class="result-score-num" id="result-score-num">0</div>
+            <div class="result-score-label" id="result-score-label">/ 20</div>
+          </div>
+        </div>
+
+        <div class="result-grade" id="result-grade">অসাধারণ! 🏆</div>
+        <div class="result-pct" id="result-pct">0%</div>
+        <p class="result-msg" id="result-msg"></p>
+      </div>
+
+      <!-- Stats row -->
+      <div class="result-stats-row">
+        <div class="result-stat-card">
+          <div class="rst-icon" style="background:rgba(16,185,129,0.15)">✅</div>
+          <div class="rst-val green" id="rst-correct">0</div>
+          <div class="rst-lbl" id="rst-correct-lbl">সঠিক</div>
+        </div>
+        <div class="result-stat-card">
+          <div class="rst-icon" style="background:rgba(239,68,68,0.15)">❌</div>
+          <div class="rst-val red" id="rst-wrong">0</div>
+          <div class="rst-lbl" id="rst-wrong-lbl">ভুল</div>
+        </div>
+        <div class="result-stat-card">
+          <div class="rst-icon" style="background:rgba(245,158,11,0.15)">⏭️</div>
+          <div class="rst-val orange" id="rst-skipped">0</div>
+          <div class="rst-lbl" id="rst-skipped-lbl">বাদ</div>
+        </div>
+        <div class="result-stat-card">
+          <div class="rst-icon" style="background:rgba(6,182,212,0.15)">⏱️</div>
+          <div class="rst-val cyan" id="rst-time">0s</div>
+          <div class="rst-lbl" id="rst-time-lbl">সময়</div>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="result-actions">
+        <button class="action-btn secondary" onclick="window.location.href='dashboard.html'">
+          🏠 <span id="back-home-lbl">হোমে ফিরো</span>
+        </button>
+        <button class="action-btn primary" onclick="retryQuiz()">
+          🔄 <span id="retry-lbl">আবার চেষ্টা</span>
+        </button>
+      </div>
+
+      <!-- Review section -->
+      <div class="review-section">
+        <div class="review-header">
+          <h3 id="review-title-lbl">উত্তর পর্যালোচনা</h3>
+          <div class="review-filter">
+            <button class="filter-btn active" onclick="filterReview('all', this)" id="filter-all">সব</button>
+            <button class="filter-btn" onclick="filterReview('wrong', this)" id="filter-wrong">ভুল</button>
+            <button class="filter-btn" onclick="filterReview('correct', this)" id="filter-correct">সঠিক</button>
+          </div>
+        </div>
+        <div class="review-list" id="review-list"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Quit confirm modal -->
+  <div class="quit-modal-overlay hidden" id="quit-modal">
+    <div class="quit-modal-card">
+      <div class="quit-modal-icon">⚠️</div>
+      <h3 id="quit-modal-title">কুইজ ছেড়ে যাবে?</h3>
+      <p id="quit-modal-sub">তোমার অগ্রগতি হারিয়ে যাবে।</p>
+      <div class="quit-modal-btns">
+        <button class="qm-btn secondary" onclick="cancelQuit()" id="quit-cancel-lbl">থাকো</button>
+        <button class="qm-btn danger" onclick="doQuit()" id="quit-confirm-lbl">হ্যাঁ, ছাড়ো</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback flash -->
+  <div class="feedback-flash" id="feedback-flash"></div>
+
+  <script src="quiz.js"></script>
+</body>
+</html>
